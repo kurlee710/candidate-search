@@ -56,7 +56,45 @@ const CandidateSearch = () => {
   useEffect(() => {
     localStorage.setItem("savedCandidates", JSON.stringify(savedCandidates));
   }, [savedCandidates]);
-  return <h1>CandidateSearch</h1>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  const currentCandidate = candidates[currentCandidateIndex];
+
+  if (!currentCandidate) {
+    return <p>No more candidates to review.</p>;
+  }
+
+  return (
+    <div className="candidate-container">
+      <h1>Candidate Search</h1>
+      <img
+        className="avatar"
+        src={currentCandidate.avatar_url}
+        alt={currentCandidate.name}
+      />
+      <h2>
+        {currentCandidate.name} ({currentCandidate.login})
+      </h2>
+      <p>Location: {currentCandidate.location}</p>
+      <p>
+        Email:{" "}
+        <a href={`mailto:${currentCandidate.email}`}>
+          {currentCandidate.email}
+        </a>
+      </p>
+      <p>Company: {currentCandidate.company}</p>
+      <p>Bio: {currentCandidate.bio}</p>
+
+      <div className="button-container">
+        <button onClick={skipCandidate}>Skip</button>
+        <button onClick={saveCandidate}>Save</button>
+      </div>
+
+      {/* Display saved candidates count */}
+      <p>{savedCandidates.length} candidates saved.</p>
+    </div>
+  );
 };
 
 export default CandidateSearch;
