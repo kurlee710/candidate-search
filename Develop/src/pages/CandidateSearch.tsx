@@ -31,6 +31,31 @@ const CandidateSearch = () => {
 
     fetchCandidates();
   }, []);
+
+  const saveCandidate = () => {
+    const currentCandidate = candidates[currentCandidateIndex];
+    setSavedCandidates((prev) => [...prev, currentCandidate]);
+    nextCandidate();
+  };
+
+  const skipCandidate = () => {
+    nextCandidate();
+  };
+
+  const nextCandidate = () => {
+    setCurrentCandidateIndex((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    const savedCandidatesFromStorage = localStorage.getItem("savedCandidates");
+    if (savedCandidatesFromStorage) {
+      setSavedCandidates(JSON.parse(savedCandidatesFromStorage));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("savedCandidates", JSON.stringify(savedCandidates));
+  }, [savedCandidates]);
   return <h1>CandidateSearch</h1>;
 };
 
